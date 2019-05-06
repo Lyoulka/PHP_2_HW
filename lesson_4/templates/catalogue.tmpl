@@ -1,0 +1,12 @@
+<div class="catalogue">
+    <h3 class="title-comments">Каталог товаров</h3>
+        <div class="goods">
+        	{% if  (data)|length>0 %}
+                {% include 'card.tmpl' %}
+            {% else %}
+        	       <div class="page-header"><h4>Каталог пуст!</h4></div>
+            {% endif %}       
+        </div>
+    <input id="show_more" count_show="4" count_add="4" type="button" class="btn btn-primary button"
+ value="Показать еще" />
+ </div>

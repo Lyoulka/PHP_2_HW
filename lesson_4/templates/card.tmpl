@@ -1,0 +1,25 @@
+{% for d in data %}
+					<div class="card" id="{{d.id}}" >
+                		<img src="img/thumbs/{{d.image}} " class="card-img-top" alt="Изображение_товара_{{d.name}}">
+                		<div class="card-body">
+                  			<h5 class="card-title">{{d.name}}</h5>
+                  			<p class="card-text"><b> Цена: {{d.price}} руб.</b></p>
+                  			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalsearch-{{d.id}}">Подробнее...</button>
+                    			<button type="button" class="btn btn-primary" onclick="item('{{d.id}}')">В корзину</button>
+                    			<div class="modal fade" id="myModalsearch-{{d.id}}" tabindex="-1" role="dialog"> 
+                    			<div class="modal-dialog" role="document">
+                        			<div class="modal-content" style="background: #ffffff;">
+                            			<div class="modal-body">
+                                			<img src='img/{{d.image}}'>
+                                			<h5 class="modal-title">{{d.name}}</h5>
+                                			<p>Назначение: {{d.type}}.'</p>
+                                			<p>{{d.description}}</p>
+                                			<p class="card-text"> <b>Цена: {{d.price}} руб.</b></p>
+                                			<button type="button" class="btn btn-primary" onclick="item('{{d.id}}')">В корзину</button>                              
+                            			</div>
+                        			</div>
+                   			 	</div>
+                			</div>
+            			</div>
+        			</div>
+{% endfor %}

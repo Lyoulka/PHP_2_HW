@@ -1,0 +1,93 @@
+<!doctype html>
+		<html lang="en">
+		  <head>
+		    <!-- Required meta tags -->
+		    <meta charset="utf-8">
+		    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		    <link href="css/style.css" rel="stylesheet">
+		    <!-- Bootstrap CSS -->
+		    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+             <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+            <script>
+                 $('#myModalsearch').on('shown.bs.modal', function () {$('#myInput').trigger('focus')})
+            </script>
+            <script type="text/javascript" src="js/main.js"></script>
+	    	<title>{{ page_title }}</title>
+		  </head>
+		 <body>
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+   			 {% if ((auth == true) and (admin == 0)) %}
+   				 <span class="navbar-brand">Вы авторизованы как <strong>{{user_name}}</strong></span>
+
+    			<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    			    <ul class="navbar-nav mr-auto mt-2 ml-5 mt-lg-0">
+    			        <li class="nav-item active">
+    			            <a href="#" class="btn btn-danger btn-md" role="button" aria-pressed="true">Выйти из профиля</a>
+    			        </li>
+                        <li class="nav-item active">
+                            <a href="catalogue.php" class="btn btn-success btn-md ml-3" role="button" aria-pressed="true">Каталог</a>
+                     </li>
+                     <li class="nav-item active">
+                            <a href="#" class="btn btn-success btn-md ml-3" role="button" aria-pressed="true">Корзина</a>
+                     </li>
+                      <li class="nav-item active">
+                            <a href="#" class="btn btn-success btn-md ml-3" role="button" aria-pressed="true">Личный кабинет</a>
+                     </li>
+                     <li class="nav-item active">
+                            <a href="#" class="btn btn-success btn-md ml-3" role="button" aria-pressed="true">Мои заказы</a>
+                     </li>
+    			    </ul>
+
+        			<form class="form-inline my-2 my-lg-0" method="get">
+        			    <input name="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" value="search">
+        			    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        			</form>
+        			{% elseif ((auth == true) and (admin == 1)) %}
+                      <span class="navbar-brand">Здравствуй, администратор</span>
+                    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                    <ul class="navbar-nav mr-auto mt-2 ml-5 mt-lg-0">
+                        <li class="nav-item active">
+                            <a href="#" class="btn btn-danger btn-md" role="button" aria-pressed="true">Выйти из профиля</a>
+                        </li>
+                         <li class="nav-item active">
+                            <a href="catalogue.php" class="btn btn-success btn-md ml-3" role="button" aria-pressed="true">Каталог</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="#" class="btn btn-success btn-md ml-3" role="button" aria-pressed="true">Корзина</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="#" class="btn btn-success btn-md ml-3" role="button" aria-pressed="true">Управление заказами</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="#" class="btn btn-success btn-md ml-3" role="button" aria-pressed="true">Мои заказы</a>
+                        </li>
+                    </ul>  
+    		  {% else %}
+    		    <span class="navbar-brand">Здравствуй, гость</span>
+    		    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    		        <ul class="navbar-nav mr-auto mt-2 ml-5 mt-lg-0">
+    		            <li class="nav-item active">
+    		                <a href="#" class="btn btn-success btn-md" role="button" aria-pressed="true">Авторизация</a>
+   		             </li>
+                     <li class="nav-item active">
+                            <a href="catalogue.php" class="btn btn-success btn-md ml-3" role="button" aria-pressed="true">Каталог</a>
+                     </li>
+                     <li class="nav-item active">
+                            <a href="#" class="btn btn-success btn-md ml-3" role="button" aria-pressed="true">Корзина</a>
+                     </li>
+                    
+    		        </ul>
+     		       {% endif %}
+   				 </div>
+			</nav>		
+		{% if child_template|length == null %}
+     		       {% else %}
+     		       	{% include child_template  %}
+     		       {% endif %}
+<!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
