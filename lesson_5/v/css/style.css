@@ -1,0 +1,53 @@
+.login-block,
+.ofder-form
+{
+background-color:#fff;
+padding:60px;
+-webkit-box-shadow:0 3px 50px 0 rgba(0,0,0,.1);
+box-shadow:0 3px 50px 0 rgba(0,0,0,.1);
+text-align:center;
+border-radius:5px;
+width: 450px;
+margin: 50px auto;
+}
+.login-block h1,.login-block h6
+{
+font-family:Open Sans,sans-serif;
+color:#96a2b2;
+letter-spacing:1px
+}
+.login-block h1
+{
+font-size:22px;
+margin-bottom:60px;
+margin-top:40px
+}
+.modal {
+	width: 50%;
+}
+.modal img {
+	width: 90%;
+	margin: 10px 5%;
+}
+.goods {
+ margin: 0 auto;
+ display: flex;
+ flex-direction: row;
+ flex-wrap: wrap;
+ justify-content: space-between;
+
+}
+.card {
+	width: 300px;
+	margin: 10px;
+}
+.input_numbers{
+	display: flex;
+	flex-direction: row;
+}
+.input_numbers input{
+	display: inline-block;
+}
+.card-body:target {
+	background: red;
+}
