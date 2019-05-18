@@ -34,9 +34,10 @@ class M_Goods{
 				$vars = array('id' => $good['goods_id'],'name' => $good['goods_name'], 'price' => $good['goods_price'], 'type' => $good['goods_type'], 'description' => $good['goods_description'], 'image'=> $good['goods_img'], 'numbers' => $good['numbers']);
 				$result .= $this->card_Template('v/v_basket_card.php', $vars);
 			}
-   		 }
-   		 $vars = array('i' => $i, 'price_res' => $price_res, 'count_res' => $count_res);
+			$vars = array('i' => $i, 'price_res' => $price_res, 'count_res' => $count_res);
    		$result .= $this->card_Template('v/v_basket_card_result.php', $vars);
+   		 }
+   		 
   	 return $result;
 
 
