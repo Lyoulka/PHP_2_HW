@@ -7,6 +7,10 @@ class C_Page extends C_Base
 	//
 	// Конструктор.
 	//
+	function __construct(){
+		$good = new C_Goods;
+		$good->change_basket($this->login);
+	}
 	function setMessage($message){
 		$this->message = $message;
 	}
@@ -72,18 +76,14 @@ class C_Page extends C_Base
 		}
 	}
 	public function action_catalogue_add_item(){
-		$good = new C_Goods;
-		$good->change_basket($this->login);
+		$this->__construct();
 	}
 	public function action_basket_page(){
-		$good = new C_Goods;
-		$good->change_basket($this->login);
+		$this->__construct();
 	}
-		public function action_basket_clear(){
-		$good = new C_Goods;
-		$good->change_basket($this->login);
+	public function action_basket_clear(){
+		$this->__construct();
 	}
-
 	public function action_basket(){
 	if (isset($_SESSION["user_login"]) && isset($_SESSION["password"])){
 		$this->basket_content = new C_Goods;
