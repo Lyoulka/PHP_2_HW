@@ -188,18 +188,19 @@ if (isset($_SESSION["user_login"]) && isset($_SESSION["password"])){
 				} elseif (isset($_POST["goods_id_delete"]) && $count == 1) {
 					$sql = "DELETE FROM `temp_orders` WHERE `goods_id`={$goods_id} AND `user_login`='{$user_login}'";
 					$db->exec($sql);
+					$count = 0;
 				} 
 				if (isset($_POST["change"]) && $_POST["count"] > 0){
 					$count = $_POST["count"];
 				} elseif (isset($_POST["change"]) && $_POST["count"] == 0) {
 					$sql = "DELETE FROM `temp_orders` WHERE `goods_id`={$goods_id} AND `user_login`='{$user_login}'";
 					$db->exec($sql);
+					$count = 0;
 				}
 				$sql = "UPDATE `temp_orders` SET `numbers`='{$count}' WHERE `goods_id`= {$goods_id} AND `user_login`='{$user_login}'";
 				$db->exec($sql);	
 
 			} elseif (isset($_POST["goods_id"])){
-					var_dump($_POST["goods_id"]);
 				$sql = "SELECT * FROM `catalogue` WHERE `goods_id`={$goods_id}";
 				$good = $db->queryOne($sql);
 				$sql = "INSERT INTO `temp_orders` (`goods_id`, `goods_img`, `goods_name`, `goods_price`, `numbers`, `user_login`) VALUES (\"{$good['goods_id']}\",\"{$good['goods_img']}\",\"{$good['goods_name']}\",\"{$good['goods_price']}\",\"1\",\"{$user_login}\")";
@@ -212,8 +213,7 @@ if (isset($_SESSION["user_login"]) && isset($_SESSION["password"])){
 			unset($_SESSION['basket']);
 			header ('Location: index.php');
 		}
-	}  
-
+	}  return $count;
 	}
 	public function changeOrderStatus(){
 		$db = $this->connect();
@@ -221,8 +221,8 @@ if (isset($_SESSION["user_login"]) && isset($_SESSION["password"])){
 		$order_status = $_POST["order_status"];
 		$order_date = $_POST["date"];
 		$sql = "UPDATE `orders` SET `order_status`='{$order_status}' WHERE `user_login`='{$user_login}' and `date` = '{$order_date}'";
-		var_dump($sql);
 		$db->exec($sql);
+		return $order_status;
 	}
 
 }

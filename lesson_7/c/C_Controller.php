@@ -13,12 +13,18 @@ abstract class C_Controller
 	public function Request($action)
 	{
 		$this->before();
-		$this->$action();   //$this->action_index
-		if ($action !== 'action_catalogue_page') {
+		  //$this->action_index
+		if ($action == 'action_basket_page' || $action == 'action_administration_page'){
+			$result = $this->$action();
+			echo $result;
+		} elseif ($action !== 'action_catalogue_page') {
+			$this->$action(); 
 			$this->render();
-		}else {
+		} else {
+			$this->$action(); 
 			$this->catalogue_render();
 		}	
+
 	}
 	//
 	// Запрос произведен методом GET?

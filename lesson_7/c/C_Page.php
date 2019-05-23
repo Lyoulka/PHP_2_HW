@@ -9,7 +9,8 @@ class C_Page extends C_Base
 	//
 	function __construct(){
 		$good = new C_Goods;
-		$good->change_basket($this->login);
+		$good = $good->change_basket($this->login);
+			return $good;
 	}
 	function setMessage($message){
 		$this->message = $message;
@@ -78,12 +79,15 @@ class C_Page extends C_Base
 	}
 	public function action_catalogue_add_item(){
 		$this->__construct();
+		
 	}
 	public function action_basket_page(){
-		$this->__construct();
+		$result = $this->__construct();
+		return $result;
 	}
 	public function action_basket_clear(){
 		$this->__construct();
+		
 	}
 	public function action_basket(){
 	if (isset($_SESSION["user_login"]) && isset($_SESSION["password"])){
@@ -125,6 +129,7 @@ class C_Page extends C_Base
 	}
 	public function action_administration_page(){
 		$good = new C_Goods();
-		$good->orderStatus();
+		$good = $good->orderStatus();
+		return $good;
 	}
 }	

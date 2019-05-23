@@ -11,7 +11,7 @@
                 <td>Город доставки:</td><td><b><?=$orderuser_city?></b></td><td>Адрес доставки:</td><td colspan="2"><b><?=$user_adress?></b></td>
              </tr>
              <tr>
-                <td>Статус заказа:</td><td colspan="4"><input class="form-control" type="text" name="order_status" id="order_status<?=$user_login?>" onchange="changeStatus('<?=$user_login?>', '<?=$order_date?>')" value="<?=$order_status?>" style="width: 300px;"></td>
+                <td>Статус заказа:</td><td colspan="4"><input class="form-control" type="text" name="order_status" id="order_status<?=$user_login?><?=$order_date?>" onchange="changeStatus('<?=$user_login?>', '<?=$order_date?>')" value="<?=$order_status?>" style="width: 300px;"></td>
              </tr>
              <tr><td colspan="5">Состав заказа:</tr>
                 <?=$order_content?>

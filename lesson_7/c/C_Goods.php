@@ -26,7 +26,8 @@
 		$this->login = $login;
 		$this->goods_id = $goods_id;
 		$change_basket = new m_Goods();
-		$change_basket->basket_changes($this->login);
+		$result = $change_basket->basket_changes($this->login);
+		return $result;
 	}
 	function sendOrder($login){
 		$this->login = $login;
@@ -47,7 +48,7 @@
 	}	
 	function orderStatus(){
 		$order_status = new m_Goods();
-		$order_status->changeOrderStatus();
-		return true;
+		$order_status = $order_status->changeOrderStatus();
+		return $order_status;
 	}
 }
