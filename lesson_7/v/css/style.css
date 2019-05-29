@@ -55,6 +55,38 @@ margin-top:40px
 	width: 33%;
 	margin: 50px 33%;
 }
-.table {
+.table, .table_admin {
 	text-align: left;
+}
+
+.table_admin img {
+	width: 100px;
+}
+.button_delete{
+	width: 200px;
+}
+.table_admin input {
+	width: 170px;
+	height: 50px;
+}
+.table_admin textarea {
+	width: 200px;
+}
+.table_admin td{
+	padding: 5px 10px;
+}
+.table_admin{
+	width: 100%;
+}
+
+.add_new_good{
+	border: 1px solid green;
+	margin: 5px;
+	background: #343a40 ;
+	color: #ffffff;
+
+}
+.new_goods{
+	background: #343a40 ;
+	color: #ffffff;
 }

@@ -43,12 +43,33 @@ switch ($_GET['c'])
 	case 'user_orders':
 		$controller = new C_Page();
 		break;	
+	case 'user_orders_done':
+		$controller = new C_Page();
+		break;	
 	case 'administration':
 		$controller = new C_Page();
 		break;
 	case 'administration_page':
 		$controller = new C_Page();
 		break;
+	case 'goods_administration':
+		$controller = new C_Page();
+		break;
+	case 'goods_administration_page':
+		$controller = new C_Page();
+		break;
+	case 'goods_administration_add_good':
+		$controller = new C_Page();
+		break;
+	case 'goods_administration_delete_good':
+		$controller = new C_Page();
+		break;
+	case 'administration_change_good':
+		$controller = new C_Page();
+		break;	
+	case 'administration_done':
+		$controller = new C_Page();
+		break;		
 	default:
 		$controller = new C_Page();
 		break;
@@ -70,6 +91,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$action = 'action_send_order';	
 	}
 }
-
 $controller->Request($action);
 

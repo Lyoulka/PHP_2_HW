@@ -26,4 +26,7 @@
         <li class="nav-item active">
             <a href="index.php?c=page&act=administration" class="btn btn-success btn-md ml-3" role="button" aria-pressed="true">Управление заказами</a>
         </li>
+        <li class="nav-item active">
+            <a href="index.php?c=page&act=goods_administration" class="btn btn-success btn-md ml-3" role="button" aria-pressed="true">Управление товарами</a>
+        </li>
     <? endif; ?>

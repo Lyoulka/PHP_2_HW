@@ -17,7 +17,7 @@ function auth(){
                 $_SESSION["auth"] = true;
                 $_SESSION["user_id"] = $user['id'];
                 $_SESSION["user_name"] = $user['name'];
-                $_SESSION["user_login"] = $user['login'];
+                $_SESSION["user_login"] = strip_tags(trim($user['login']));
                 $_SESSION["password"] = true;
                 $_SESSION["admin"] = $user['admin'];
                 if ( $_SESSION["admin"] == 0){
@@ -50,7 +50,7 @@ function auth(){
         $users->execute([$login]);
         $users = $users->fetch(PDO::FETCH_ASSOC); 
         if (!empty($users)){
-            if ($users['user_login'] == 'admin'){
+            if (strip_tags(trim($users['user_login'])) == 'admin'){
             return ($message = "Логин админа нельзя зарегистрировать!");
             } else {
                 return ($message = "Такой логин уже есть!");

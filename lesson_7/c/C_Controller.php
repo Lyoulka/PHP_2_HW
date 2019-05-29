@@ -11,14 +11,14 @@ abstract class C_Controller
 	protected abstract function before();
 	
 	public function Request($action)
-	{
+	{ 
 		$this->before();
 		  //$this->action_index
-		if ($action == 'action_basket_page' || $action == 'action_administration_page'){
+		if ($action == 'action_basket_page' || $action == 'action_administration_page' || $action == 'action_administration_change_good' || $action == 'action_goods_administration_add_good'){
 			$result = $this->$action();
 			echo $result;
-		} elseif ($action !== 'action_catalogue_page') {
-			$this->$action(); 
+		} elseif ($action !== 'action_catalogue_page' && $action !== 'action_goods_administration_page') {
+			$this->$action();
 			$this->render();
 		} else {
 			$this->$action(); 
