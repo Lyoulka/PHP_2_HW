@@ -6,8 +6,7 @@ class M_Goods{
     }
 	public function create_catalogue($startIndex, $countView){
 		$db = $this->connect(); 
-		$sql = "SELECT * FROM `catalogue` LIMIT {$startIndex}, {$countView}";
-		$goodsData = $db->queryAll($sql);
+		$goodsData = $db->select_catalogue($startIndex, $countView);
   		if(empty($goodsData)){
    		 $result = 'finish';
 		}else{ 
@@ -25,8 +24,7 @@ class M_Goods{
 	}
 	public function create_basket ($user_login){
 		$db = $this->connect();
-		$sql = "SELECT * FROM `temp_orders` WHERE `user_login`='{$user_login}'";
-		$goodsData = $db->queryAll($sql);
+		$goodsData = $db->select_basket('temp_orders', $user_login);
 		if(empty($goodsData)){
    		 $result = '<p>Вы еще не добавили ни одного товара!</p>';
 		}else{ 
@@ -45,11 +43,10 @@ class M_Goods{
 	public function create_order($user_login, $table){
 		$db = $this->connect();
 		if ($table == 'orders' || $table == 'done_orders'){
-			$sql = "SELECT * FROM `{$table}` where user_login='{$user_login}' ORDER BY `date` DESC";
+			$goodsData  = $db->select_order( $table, $user_login);
 		} else {
-			$sql = "SELECT * FROM `{$table}` WHERE `user_login`='{$user_login}'";
+			$goodsData  = $db->select_basket( $table, $user_login);
 		}
-		$goodsData = $db->queryAll($sql);
 		if (!empty($goodsData)){ 
 			$price_res = 0;
 			$lastDate = NULL;
@@ -72,8 +69,7 @@ class M_Goods{
 
 					} else {
 						$vars = array('id' => $good['goods_id'],'name' => $good['goods_name'], 'price' => $good['goods_price'], 'numbers' => $good['numbers']);
- 					
-						$result .= $this->card_Template('v/v_order_card.php', $vars);
+ 							$result .= $this->card_Template('v/v_order_card.php', $vars);
 					}
 				$i++;
       			$price_res += ($good['goods_price'] * $good['numbers']);
@@ -93,8 +89,7 @@ class M_Goods{
    		}
    	public function order_admistration($table){
    		$db = $this->connect();
-   		$sql = "SELECT * FROM `{$table}` ORDER BY `date` DESC";
-   		$goodsData = $db->queryAll($sql);
+   		$goodsData = $db->select_order_admin($table);
    		if (!empty($goodsData)){ 
 			$price_res = 0;
 			$count = 0;
@@ -145,22 +140,9 @@ class M_Goods{
 		return $result;
    }
 	public function make_order($user_login){
-    	$user_id = $_SESSION["user_id"];
-    	$user_name = $_POST["name"];
-    	$user_surname = $_POST["surname"];
-    	$user_city = $_POST["city"];
-    	$user_adress = $_POST["adress"];
-    	$order_status = "Ожидает подтверждения";
-		$db = $this->connect();
-		$sql = "SELECT * FROM `temp_orders` where user_login='{$user_login}'";
-		$goodsTemp = $db->queryAll($sql);
-		foreach ($goodsTemp as $good) {
-			$sql = "INSERT INTO `orders` (`user_id`, `user_login`, `user_name`, `user_surname`, `user_city`, `user_adress`, `goods_id`, `goods_name`, `numbers`, `goods_price`, `order_status`, `date`) VALUES (\"{$user_id}\",\"{$user_login}\",\"{$user_name}\",\"{$user_surname}\",\"{$user_city}\",\"{$user_adress}\",\"{$good['goods_id']}\",\"{$good['goods_name']}\", {$good['numbers']}, {$good['goods_price']},\"{$order_status}\", NOW())";
-			$db->exec($sql);
-		}
-		unset($_SESSION['basket']);
-		$sql = "DELETE FROM `temp_orders` WHERE `user_login`='{$user_login}'";
-		$db->exec($sql);
+    	$db = $this->connect();
+		$goodsTemp = $db->select_basket('temp_orders', $user_login);
+		$db->new_one_order($goodsTemp, $user_login);
 		if ($_SESSION['basket'] == 0){
 		header ('Location:index.php?c=page&act=user_orders');
 		}
@@ -190,42 +172,32 @@ class M_Goods{
 			} else {
 			$goods_id = $_POST["change"];
 			}
-			$sql = "SELECT * FROM `temp_orders` WHERE `goods_id`={$goods_id} AND `user_login`='{$user_login}'";
-			$goodTemp = $db->queryOne($sql);
+			$goodTemp = $db->select_good('temp_orders', $goods_id, $login);
 			if (isset($goodTemp)){
 			$goods_id = $goodTemp['goods_id'];
 			$count = $goodTemp['numbers'];
-
 				if (isset($_POST["goods_id"])){
 					$count++;
 				} 
 				if (isset($_POST["goods_id_delete"]) && $count > 1) {
 					$count--;
 				} elseif (isset($_POST["goods_id_delete"]) && $count == 1) {
-					$sql = "DELETE FROM `temp_orders` WHERE `goods_id`={$goods_id} AND `user_login`='{$user_login}'";
-					$db->exec($sql);
+					$db->delete_good('temp_orders', $goods_id, $login);
 					$count = 0;
 				} 
 				if (isset($_POST["change"]) && $_POST["count"] > 0){
 					$count = $_POST["count"];
 				} elseif (isset($_POST["change"]) && $_POST["count"] == 0) {
-					$sql = "DELETE FROM `temp_orders` WHERE `goods_id`={$goods_id} AND `user_login`='{$user_login}'";
-					$db->exec($sql);
+					$db->delete_good('temp_orders', $goods_id, $login);
 					$count = 0;
 				}
-				$sql = "UPDATE `temp_orders` SET `numbers`='{$count}' WHERE `goods_id`= {$goods_id} AND `user_login`='{$user_login}'";
-				$db->exec($sql);	
-
+				$db->update_good('temp_orders',$count, $goods_id, $login);	
 			} elseif (isset($_POST["goods_id"])){
-				$sql = "SELECT * FROM `catalogue` WHERE `goods_id`={$goods_id}";
-				$good = $db->queryOne($sql);
-				$sql = "INSERT INTO `temp_orders` (`goods_id`, `goods_img`, `goods_name`, `goods_price`, `numbers`, `user_login`) VALUES (\"{$good['goods_id']}\",\"{$good['goods_img']}\",\"{$good['goods_name']}\",\"{$good['goods_price']}\",\"1\",\"{$user_login}\")";
-					$db->exec($sql);
+				$db->add_new_good_in_basket($goods_id, $login);
 				}
 		}			
 		if (isset($_GET['act']) and $_GET['act'] == 'basket_clear'){
-			$sql =  "DELETE FROM `temp_orders` WHERE `user_login`='{$user_login}'";
-			$db->exec($sql);
+			$db->delete_all(`temp_orders`, $login);
 			unset($_SESSION['basket']);
 			header ('Location: index.php');
 		}
@@ -233,21 +205,14 @@ class M_Goods{
 	}
 	public function changeOrderStatus(){
 		$db = $this->connect();
-		$user_login = strip_tags(trim($_POST["changeStatus"]));
-		$order_status = $_POST["order_status"];
-		$order_date = $_POST["date"];
-	    $data = $db->prepare("UPDATE `orders` SET `order_status`= ? WHERE `user_login`= ? and `date` = ?");
-    	$data->execute([$order_status, $user_login, $order_date]);
+	    $order_status = $db->order_status();
 		return $order_status;
 	}
 	public function new_good(){
 	 	$db = $this->connect();
 		$this->uploadsFiles();
 		if ($_POST['good_name'] !== "" && $_POST['good_price'] !== "" && $_POST['good_type'] !== "" && $_POST['good_description'] !== "" && $_POST['file'] !== "") {
-			$sql = "INSERT INTO `catalogue` (`goods_name`, `goods_price`, `goods_type`, `goods_description`, `goods_img`) VALUES (\"{$_POST['good_name']}\", \"{$_POST['good_price']}\", \"{$_POST['good_type']}\", \"{$_POST['good_description']}\", \"{$_POST['file']}\")";
-		$db->exec($sql);
-		$sql = "SELECT * FROM `catalogue` order by `goods_id` DESC LIMIT 1"; 
-		$good = $db->queryOne($sql);
+		$good = $db->add_new_good();
 		$vars = array('id' => $good['goods_id'],'name' => $good['goods_name'], 'price' => $good['goods_price'], 'type' => $good['goods_type'], 'description' => $good['goods_description'], 'image'=> $good['goods_img']);
 		$result .= $this->card_Template('v/v_goods_list_card.php', $vars);
 		return $result;
@@ -305,8 +270,7 @@ class M_Goods{
     }
    	public function deleteGoodFromCatalogue(){
    		$db = $this->connect();
-   		$sql="DELETE FROM `catalogue` WHERE `goods_id`={$_POST['goods_id']}";
-   		$db->exec($sql);
+   		$db->delete_from_catalogue();
    	}
    	public function changeGoodFromCatalogue(){
    		$goods_id = $_POST['goods_id'];
@@ -316,22 +280,15 @@ class M_Goods{
    		if ($variable == 'file'){
    			$result = $this->uploadsFiles();   			
    			}		
-   		$sql = $sql = "UPDATE `catalogue` SET `goods_{$variable}`='{$value}' WHERE `goods_id` = '{$goods_id}'";
-   		$db->exec($sql);	
+   		$db->apdate_catalogue($variable, $goods_id);	
    		return $value;
    	}
    	public function delete_order(){
    		$db = $this->connect();
-   		$sql="DELETE FROM `orders` WHERE `user_login`='{$_POST['deleteOrder']}' AND `date` ='{$_POST['date']}' ";
-   		$db->exec($sql);
+   		$db->order_delete($_POST['deleteOrder']);
    	}
    	public function replaceOrder(){
    		$db = $this->connect();
-   		$sql = "UPDATE `orders` SET `order_status`='Выполнен' WHERE `user_login` = '{$_POST['doneOrder']}' and `date` = '{$_POST['date']}'";
-   		$db->exec($sql);	
-   		$sql = "INSERT INTO `done_orders` SELECT * FROM `orders` WHERE `user_login` = '{$_POST['doneOrder']}' and `date` = '{$_POST['date']}'";
-   		$db->exec($sql);
-   		$sql="DELETE FROM `orders` WHERE `user_login` = '{$_POST['doneOrder']}' and `date` = '{$_POST['date']}'";
-   		$db->exec($sql);
+   		$db->order_transfer();
    	}
 }
